@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Untuk Kamu, Sayanggg 🤍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#ffb3d1;
+  --accent2:#ffd9a0;
+  --ink:#f7eaf3;
+  --muted:rgba(247,234,243,.55);
+  --line:rgba(255,179,209,.20);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;margin:0;overflow:hidden;}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(120% 80% at 50% -10%, #3d0f31 0%, #200818 45%, #0a0208 100%);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- background canvas ---------- */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ---------- screens ---------- */
+.screen{
+  position:fixed;inset:0;z-index:2;
+  display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;
+  transition:opacity .7s ease, visibility .7s;
+}
+.screen.active{opacity:1;visibility:visible;}
+
+/* ================= INTRO ================= */
+#intro{align-items:center;justify-content:center;padding:28px;text-align:center;}
+.intro-card{max-width:520px;animation:rise 1s cubic-bezier(.2,.8,.2,1) both .15s;}
+@keyframes rise{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+
+.heart-wrap{position:relative;width:104px;height:104px;margin:0 auto 30px;}
+.heart-wrap::after{
+  content:'';position:absolute;inset:-26px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,179,209,.28), transparent 68%);
+  animation:breathe 3.6s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(.85);opacity:.6;}50%{transform:scale(1.12);opacity:1;}}
+.heart-wrap svg{width:100%;height:100%;position:relative;animation:beat 2.2s ease-in-out infinite;filter:drop-shadow(0 6px 26px rgba(255,120,175,.55));}
+@keyframes beat{0%,100%{transform:scale(1);}14%{transform:scale(1.11);}28%{transform:scale(1);}42%{transform:scale(1.07);}}
+
+.eyebrow{
+  font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--accent);opacity:.85;margin:0 0 14px;
+}
+h1{
+  font-family:'Cormorant Garamond',serif;font-weight:500;
+  font-size:clamp(2.3rem,7vw,3.4rem);line-height:1.12;margin:0 0 18px;
+  letter-spacing:.01em;
+}
+h1 em{font-style:italic;color:var(--accent);}
+.intro-sub{
+  font-size:clamp(.86rem,2.6vw,.96rem);line-height:1.85;color:var(--muted);
+  margin:0 0 34px;font-weight:300;
+}
+
+.btn{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  color:#2a0a1e;background:linear-gradient(135deg,#ffd9a0,#ffb3d1);
+  border:0;border-radius:100px;padding:15px 34px;cursor:pointer;
+  box-shadow:0 10px 34px rgba(255,140,190,.34);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+}
+.btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 16px 44px rgba(255,140,190,.48);}
+.btn:active{transform:scale(.97);}
+
+/* ================= READER ================= */
+#reader{padding:0;}
+
+.bar{
+  display:flex;align-items:center;gap:12px;
+  padding:18px 18px 0;flex:0 0 auto;
+}
+.icon-btn{
+  width:38px;height:38px;flex:0 0 auto;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);border-radius:12px;
+  color:var(--ink);font-size:.95rem;cursor:pointer;
+  transition:.25s;backdrop-filter:blur(8px);
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.icon-btn:hover{background:rgba(255,179,209,.16);border-color:rgba(255,179,209,.45);}
+.icon-btn.on{background:rgba(255,179,209,.24);border-color:var(--accent);color:#fff;}
+#musicBtn.on{animation:musicPulse 1.8s ease-in-out infinite;box-shadow:0 0 16px rgba(255,179,209,.6);}
+@keyframes musicPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+
+.progress{
+  flex:1;height:3px;border-radius:99px;overflow:hidden;
+  background:rgba(255,255,255,.10);
+}
+.progress-fill{
+  height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#ffd9a0,#ffb3d1,#ff8fc0);
+  box-shadow:0 0 14px rgba(255,150,200,.7);
+  transition:width .55s cubic-bezier(.2,.8,.2,1);
+}
+
+.stage{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:22px 20px;min-height:0;
+}
+
+.card{
+  position:relative;width:min(660px,100%);
+  min-height:min(420px,58vh);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(30px,5vw,52px);
+  border-radius:26px;
+  background:linear-gradient(160deg, rgba(255,255,255,.075), rgba(255,255,255,.022));
+  border:1px solid rgba(255,255,255,.11);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.14);
+  overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:-60%;left:-30%;width:80%;height:120%;
+  background:radial-gradient(circle, rgba(255,179,209,.13), transparent 62%);
+  pointer-events:none;
+}
+.card::after{
+  content:'';position:absolute;inset:0;border-radius:26px;
+  padding:1px;pointer-events:none;
+  background:linear-gradient(150deg, rgba(255,217,160,.35), transparent 40%, rgba(255,143,192,.3));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:.7;
+}
+
+.chapter{
+  font-size:.66rem;letter-spacing:.36em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;margin:0 0 22px;
+  display:flex;align-items:center;gap:10px;opacity:.9;
+}
+.chapter::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg, var(--line), transparent);
+}
+
+.text{
+  font-family:'Lora',serif;font-weight:400;
+  font-size:clamp(1.02rem,2.3vw,1.32rem);
+  line-height:1.82;margin:0;color:#fbf1f7;
+  letter-spacing:.002em;
+}
+.text.en{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+  font-size:clamp(1.35rem,3.2vw,1.95rem);line-height:1.5;color:#ffe6f2;
+}
+.w{
+  display:inline-block;opacity:0;transform:translateY(10px);filter:blur(7px);
+  transition:opacity .55s ease, transform .55s cubic-bezier(.2,.8,.2,1), filter .55s ease;
+}
+.w.in{opacity:1;transform:none;filter:blur(0);}
+
+.nav{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  gap:26px;padding:0 20px 26px;
+}
+.nav-btn{
+  width:56px;height:56px;border-radius:50%;
+  display:grid;place-items:center;font-size:1.6rem;line-height:1;
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--line);color:var(--ink);
+  cursor:pointer;transition:.28s cubic-bezier(.2,.8,.2,1);
+  backdrop-filter:blur(10px);padding-bottom:4px;
+}
+.nav-btn:hover{background:rgba(255,179,209,.2);border-color:rgba(255,179,209,.6);transform:translateY(-2px);}
+.nav-btn:active{transform:scale(.92);}
+.nav-btn.primary{
+  background:linear-gradient(135deg,#ffd9a0,#ffb3d1);color:#2a0a1e;border:0;
+  box-shadow:0 10px 30px rgba(255,140,190,.35);
+}
+.counter{
+  font-size:.72rem;letter-spacing:.2em;color:var(--muted);
+  min-width:86px;text-align:center;font-variant-numeric:tabular-nums;
+}
+
+/* ================= OUTRO ================= */
+#outro{align-items:center;justify-content:center;text-align:center;padding:32px;}
+.outro-inner{max-width:560px;animation:rise 1s cubic-bezier(.2,.8,.2,1) both;}
+.outro-heart{
+  width:120px;height:120px;margin:0 auto 32px;
+  animation:beat 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 10px 40px rgba(255,120,175,.6));
+}
+#outro h2{
+  font-family:'Cormorant Garamond',serif;font-weight:500;
+  font-size:clamp(1.7rem,5.4vw,2.7rem);line-height:1.32;
+  margin:0 0 22px;
+}
+#outro h2 em{font-style:italic;color:var(--accent);}
+#outro p{
+  font-family:'Lora',serif;font-size:clamp(.9rem,2.6vw,1rem);
+  color:var(--muted);line-height:1.9;margin:0 0 38px;
+}
+
+/* ================= DRAWER ================= */
+.drawer{
+  position:fixed;inset:0;z-index:60;
+  background:rgba(8,2,8,.62);backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:.35s;
+}
+.drawer.open{opacity:1;visibility:visible;}
+.drawer-panel{
+  position:absolute;left:50%;bottom:0;transform:translate(-50%,105%);
+  width:min(540px,100%);max-height:80vh;overflow:auto;
+  padding:26px 22px 34px;
+  border-radius:26px 26px 0 0;
+  background:linear-gradient(180deg,#2e0b26,#160412);
+  border:1px solid rgba(255,179,209,.18);
+  transition:transform .45s cubic-bezier(.2,.85,.2,1);
+  box-shadow:0 -30px 80px rgba(0,0,0,.6);
+}
+.drawer.open .drawer-panel{transform:translate(-50%,0);}
+.drawer-panel h3{
+  font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;
+  margin:0 0 18px;color:var(--accent);letter-spacing:.02em;
+}
+.ch-item{
+  width:100%;display:flex;align-items:center;gap:14px;
+  padding:14px 16px;margin-bottom:8px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;
+  text-align:left;cursor:pointer;transition:.22s;
+}
+.ch-item:hover{background:rgba(255,179,209,.14);border-color:rgba(255,179,209,.4);transform:translateX(3px);}
+.ch-item .ic{font-size:1.05rem;}
+.ch-item .num{margin-left:auto;font-size:.7rem;color:var(--muted);letter-spacing:.12em;}
+
+/* ================= HINT ================= */
+.hint{
+  position:fixed;bottom:78px;left:0;right:0;text-align:center;
+  font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(247,234,243,.3);z-index:3;pointer-events:none;
+  opacity:0;transition:opacity .8s;
+}
+.hint.show{opacity:1;}
+
+/* ================= WATERMARK ================= */
+.watermark{
+  position:fixed;
+  right:14px;
+  bottom:9px;
+  z-index:58;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.74rem;
+  letter-spacing:.04em;
+  color:rgba(255,179,209,.42);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+  text-shadow:0 1px 8px rgba(0,0,0,.55);
+  white-space:nowrap;
+}
+.watermark::before{content:'· ';}
+.watermark::after{content:' ·';}
+
+@media (max-width:520px){
+  .stage{padding:16px 14px;}
+  .card{min-height:52vh;border-radius:22px;}
+  .nav{gap:20px;padding-bottom:22px;}
+  .nav-btn{width:50px;height:50px;}
+  .bar{padding:14px 14px 0;gap:9px;}
+  .hint{bottom:70px;}
+  .watermark{font-size:.68rem;bottom:7px;right:10px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- ============ INTRO ============ -->
+<section class="screen active" id="intro">
+  <div class="intro-card">
+    <div class="heart-wrap">
+      <svg viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffd9a0"/>
+            <stop offset="55%" stop-color="#ffb3d1"/>
+            <stop offset="100%" stop-color="#ff7fb8"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#hg)" d="M12 21s-7.8-5.4-7.8-10.9A4.65 4.65 0 0 1 12 7.2a4.65 4.65 0 0 1 7.8 2.9C19.8 15.6 12 21 12 21z"/>
+      </svg>
+    </div>
+    <p class="eyebrow">sebuah surat kecil</p>
+    <h1>Untuk Kamu,<br><em>Sayanggg</em></h1>
+    <p class="intro-sub">
+      Ada banyak hal yang pengen aku sampaikan.<br>
+      Nggak usah buru-buru — kita baca pelan-pelan ya, satu per satu.
+    </p>
+    <button class="btn" id="openBtn">Buka Surat</button>
+  </div>
+</section>
+
+<!-- ============ READER ============ -->
+<section class="screen" id="reader">
+  <header class="bar">
+    <button class="icon-btn" id="menuBtn" aria-label="Daftar bagian">☰</button>
+    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <button class="icon-btn" id="musicBtn" aria-label="Musik">♪</button>
+    <button class="icon-btn" id="autoBtn" aria-label="Putar otomatis">▶</button>
+  </header>
+
+  <main class="stage">
+    <article class="card">
+      <p class="chapter" id="chapterLabel"></p>
+      <p class="text" id="cardText"></p>
+    </article>
+  </main>
+
+  <footer class="nav">
+    <button class="nav-btn" id="prevBtn" aria-label="Sebelumnya">‹</button>
+    <div class="counter" id="counter">01 / 62</div>
+    <button class="nav-btn primary" id="nextBtn" aria-label="Selanjutnya">›</button>
+  </footer>
+</section>
+
+<!-- ============ OUTRO ============ -->
+<section class="screen" id="outro">
+  <div class="outro-inner">
+    <svg class="outro-heart" viewBox="0 0 24 24" fill="none">
+      <path fill="url(#hg)" d="M12 21s-7.8-5.4-7.8-10.9A4.65 4.65 0 0 1 12 7.2a4.65 4.65 0 0 1 7.8 2.9C19.8 15.6 12 21 12 21z"/>
+    </svg>
+    <h2>I love you,<br><em>not because you're perfect,<br>but because you're you.</em></h2>
+    <p>And that has always meant so much to me.<br>— 🤍</p>
+    <button class="btn" id="restartBtn">Baca Lagi dari Awal</button>
+  </div>
+</section>
+
+<!-- ============ DRAWER ============ -->
+<div class="drawer" id="drawer">
+  <div class="drawer-panel">
+    <h3>Bagian Surat</h3>
+    <div id="chapterList"></div>
+  </div>
+</div>
+
+<div class="hint" id="hint">geser · atau pakai ← →</div>
+<div class="watermark">dari pacarmu rio</div>
+
+<script>
+/* =========================================================
+   ISI SURAT — tiap kartu satu afirmasi
+   c = index bagian, en = kartu berbahasa Inggris
+   ========================================================= */
+const CHAPTERS = [
+  { n:'Malam Ini',            i:'🌙' },
+  { n:'Aku & Kamu',           i:'🕯️' },
+  { n:'Kamu Datang',          i:'✨' },
+  { n:'Joget Dangdut',        i:'💃' },
+  { n:'Aku Bangga',           i:'🌟' },
+  { n:'Kamu Boleh',           i:'🌧️' },
+  { n:'Ruang untuk Tumbuh',   i:'🌱' },
+  { n:'Terima Kasih',         i:'🙏' },
+  { n:'Yang Bikin Kamu Spesial', i:'💫' },
+  { n:'Untuk Kamu, Hari Ini', i:'🌸' },
+  { n:'Penutup',              i:'💗' }
+];
+
+const CARDS = [
+  { c:0, t:`Sayanggg, aku nggak tahu kenapa malam ini aku pengen banget bilang banyak hal ke kamu. Mungkin sebagian udah pernah aku ceritain, bahkan mungkin kamu udah hafal, tapi aku harap kamu nggak pernah bosen dengernya yaa.` },
+  { c:0, t:`Kadang aku suka mikir, dari banyaknya orang yang pernah aku temuin, aku bersyukur banget ternyata salah satunya adalah kamu.` },
+
+  { c:1, t:`Aku masih inget kita waktu SMP dulu, waktu aku masih jadi anak yang bahkan belum bisa ngeliat hal-hal baik dari dirinya sendiri.` },
+  { c:1, t:`Aku bukan orang yang punya banyak kepercayaan diri, dan jujur, dulu aku sering ngerasa kalau aku nggak cukup menarik buat orang lain.` },
+  { c:1, t:`Rasanya jarang ada orang yang benar-benar mau mengenal aku lebih jauh, ngajak ngobrol panjang, atau sekadar bercanda tanpa aku harus berusaha duluan.` },
+
+  { c:2, t:`Tapi kamu beda, sayang. Kamu datang dengan cara kamu sendiri, mau deket sama aku, ngajak ngobrol, bercanda, dan memperlakukan aku seolah-olah nggak ada alasan buat aku merasa kurang dari siapa pun.` },
+  { c:2, t:`Padahal kamu punya banyak temen, dikenal banyak orang, cantik, dan punya begitu banyak alasan buat sibuk sama dunia kamu sendiri. Tapi kamu tetap mau melibatkan aku di dalamnya.` },
+  { c:2, t:`Aku nggak tahu apakah kamu sadar betapa berartinya hal itu buat aku, tapi kamu pernah bikin seorang anak laki-laki yang nggak terlalu percaya sama dirinya sendiri merasa dilihat, diterima, dan dihargai.` },
+
+  { c:3, t:`Ada satu momen yang rasanya bakal selalu punya tempat sendiri di hati aku, yaitu waktu acara sekolah udah selesai dan orang-orang mulai dangdutan di depan. HAHAHA.` },
+  { c:3, t:`Aku masih inget gimana kamu ngajak aku maju buat joget bareng, dengan tatapan yang tulus banget, tanpa rasa malu, tanpa ragu, dan tanpa sedikit pun kelihatan mikirin apa kata orang lain.` },
+  { c:3, t:`Di saat kamu bisa aja menjaga image kamu, kamu justru milih buat menikmati momen itu dengan jadi diri kamu sendiri.` },
+  { c:3, t:`Di detik itu ada sesuatu yang rasanya klik banget di hati aku. Aku melihat kamu bukan cuma sebagai perempuan cantik yang dikagumi banyak orang, tapi sebagai seseorang yang punya hati hangat, tulus, dan nggak takut memperlakukan orang lain dengan baik.` },
+  { c:3, t:`Lucu ya, dari banyaknya hal yang mungkin bisa bikin seseorang jatuh cinta, aku justru semakin jatuh cinta gara-gara sebuah ajakan joget dangdut HAHAHA.` },
+  { c:3, t:`Tapi mungkin memang begitu cara perasaan bekerja, kadang bukan sesuatu yang besar yang bikin kita jatuh cinta, melainkan hal kecil yang dilakukan seseorang dengan begitu tulus.` },
+  { c:3, en:true, t:`And if I could go back to that day, I'd still choose to dance with you, even if I knew I'd fall for you all over again.` },
+
+  { c:4, t:`Rasa sayang aku ke kamu nggak cuma berhenti di kenangan tentang kita waktu SMP. Aku nggak cuma mencintai anak perempuan yang dulu ngajak aku joget, aku juga mencintai perempuan yang sekarang sedang tumbuh, belajar, berjuang, dan berusaha memahami kehidupannya sendiri.` },
+  { c:4, t:`Aku bangga banget sama kamu, dan aku harap kamu juga bisa ngerasain kebanggaan yang sama terhadap diri kamu.` },
+  { c:4, t:`Aku bangga sama semua hal yang udah kamu lewatin, termasuk hal-hal yang mungkin nggak pernah kamu ceritain sepenuhnya ke aku.` },
+  { c:4, t:`Aku bangga sama usaha kecil kamu, sama keberanian kamu buat terus mencoba meskipun nggak semuanya berjalan sesuai harapan, dan sama cara kamu tetap melangkah bahkan di hari-hari ketika kamu mungkin ngerasa capek banget.` },
+  { c:4, t:`Aku nggak tahu seberapa sering kamu merasa bangga sama diri kamu sendiri, tapi aku mau kamu tahu kalau aku bangga banget sama kamu. Bangga sama cara kamu bertahan sampai hari ini, sama semua usaha yang kamu lakuin, bahkan sama hal-hal kecil yang mungkin menurut kamu nggak berarti.` },
+
+  { c:5, t:`Aku tahu kamu nggak selalu baik-baik aja, dan aku juga tahu kadang kamu bisa terlalu keras sama diri sendiri.` },
+  { c:5, t:`Tapi please, sayang, jangan pernah berpikir kalau kamu harus selalu berhasil, selalu ceria, atau selalu menjadi versi terbaik dari diri kamu supaya pantas dicintai.` },
+  { c:5, t:`Kamu boleh punya hari yang buruk, boleh nangis, boleh bingung, boleh salah, dan boleh berhenti sebentar buat istirahat. Semua itu nggak pernah bikin kamu jadi kurang berharga.` },
+  { c:5, t:`Aku harap kamu bisa belajar melihat diri kamu dengan lebih lembut, karena ada begitu banyak hal indah dalam diri kamu yang mungkin selama ini nggak kamu sadari.` },
+  { c:5, t:`Aku tahu ada banyak hal yang nggak selalu kamu ceritain, ada rasa capek yang kadang kamu simpan sendiri, dan ada hari-hari ketika semuanya terasa berat. Tapi sayang, kamu nggak harus selalu jadi orang yang kuat, ya?` },
+  { c:5, en:true, t:`You don't have to earn your worth, love. You already have it.` },
+
+  { c:6, t:`Aku suka cara kamu bisa jadi diri sendiri, aku suka sisi ceria dan spontan kamu, aku suka ketulusan kamu, dan aku juga menghargai sisi-sisi kamu yang masih terus belajar dan berkembang.` },
+  { c:6, t:`Kamu nggak harus mempertahankan diri kamu yang dulu hanya karena itu versi kamu yang pertama kali bikin aku jatuh cinta.` },
+  { c:6, t:`Kamu boleh berubah, boleh punya mimpi baru, boleh menemukan hal-hal baru tentang diri kamu, dan boleh tumbuh menjadi seseorang yang bahkan belum pernah kita bayangkan sebelumnya.` },
+  { c:6, t:`Aku nggak mau cinta aku jadi sesuatu yang membatasi kamu. Justru aku pengen kamu punya ruang untuk berkembang, mengejar apa yang kamu impikan, dan menemukan kebahagiaan yang benar-benar kamu inginkan.` },
+  { c:6, t:`Nilai diri kamu nggak ditentukan sama penampilan kamu, pencapaian kamu, kesalahan kamu, atau bagaimana orang lain memandang kamu. Bahkan ketika kamu merasa belum melakukan apa-apa, kamu tetap seseorang yang berharga.` },
+  { c:6, t:`Dan kalau suatu hari kamu mulai meragukan diri sendiri, aku harap kamu bisa inget kalau ada seseorang yang melihat begitu banyak kebaikan dalam diri kamu, bahkan dari hal-hal kecil yang mungkin kamu sendiri udah lupa pernah melakukannya.` },
+
+  { c:7, t:`Terima kasih karena udah hadir dalam hidup aku, karena pernah mendekat ketika aku sendiri belum punya keberanian untuk merasa pantas didekati, dan karena udah menjadi bagian dari begitu banyak cerita yang membentuk diri aku sampai hari ini.` },
+  { c:7, t:`Aku sadar perjalanan kita nggak selalu mudah. Kita bukan lagi dua anak SMP yang cuma mikirin hal-hal sederhana, dan semakin dewasa, semakin banyak juga hal yang harus kita pahami, baik tentang diri sendiri maupun tentang satu sama lain.` },
+  { c:7, t:`Aku tahu aku nggak sempurna, aku pernah salah ngomong, salah memahami perasaan kamu, atau mungkin belum bisa menunjukkan rasa sayang dengan cara yang kamu butuhkan.` },
+  { c:7, t:`Tapi aku pengen terus belajar menjadi seseorang yang lebih baik, bukan dengan menjanjikan kalau aku nggak akan pernah salah, melainkan dengan mau mendengarkan, memahami, mengakui kesalahan, dan memperbaikinya.` },
+  { c:7, t:`Aku percaya hubungan yang baik bukan tentang siapa yang paling benar atau siapa yang paling kuat menahan semuanya, tapi tentang dua orang yang sama-sama mau menjaga, menghargai, dan memahami satu sama lain.` },
+  { c:7, t:`Aku pengen kita bisa jadi tempat yang aman buat bercerita, buat jujur tentang apa yang dirasakan, bahkan ketika ada hal yang sulit dibicarakan.` },
+  { c:7, t:`Aku nggak mau kamu merasa harus selalu bahagia di depan aku, dan aku juga berharap kita bisa saling menerima bahwa kita sama-sama manusia yang masih punya banyak kekurangan.` },
+  { c:7, t:`Aku nggak bisa menjanjikan masa depan yang selalu mudah, tapi aku ingin kita punya keberanian untuk menghadapi hal-hal sulit dengan lebih dewasa, tanpa kehilangan rasa hormat dan kasih sayang.` },
+
+  { c:8, t:`Di luar apa pun yang akan terjadi nanti, ada satu hal yang selalu ingin aku lihat dari kamu: aku ingin kamu bahagia sebagai diri kamu sendiri.` },
+  { c:8, t:`Aku ingin kamu bisa tersenyum karena bangga sama hidup yang sedang kamu bangun, bukan karena merasa harus memenuhi harapan siapa pun.` },
+  { c:8, t:`Kalau suatu hari kamu bertanya apa yang sebenarnya bikin kamu begitu spesial buat aku, jawabannya bukan cuma karena kamu cantik, bukan cuma karena kenangan kita, dan bukan juga karena sudah berapa lama kita saling mengenal.` },
+  { c:8, t:`Tapi karena sejak awal, kamu menunjukkan ke aku sesuatu yang sederhana dan begitu berarti: bahwa seseorang bisa membuat orang lain merasa berharga hanya dengan ketulusan kecil yang bahkan nggak dia sadari.` },
+  { c:8, t:`Mungkin buat kamu hari itu cuma hari biasa ketika kita joget bareng setelah acara sekolah, tapi buat aku, hari itu adalah salah satu momen ketika aku mulai memahami rasanya diterima tanpa harus menjadi orang lain.` },
+  { c:8, t:`Dan sekarang aku berharap kamu juga bisa merasakan penerimaan yang sama, bukan cuma dari aku, tapi terutama dari diri kamu sendiri.` },
+
+  { c:9, t:`Dari kamu aku belajar banyak hal tentang perasaan, kesabaran, dan bagaimana mencintai seseorang yang punya dunia dan isi kepala yang berbeda dari aku.` },
+  { c:9, t:`Aku nggak mau kamu merasa harus jadi orang lain cuma supaya aku tetap sayang sama kamu. Aku suka kamu dengan segala hal kecil yang bikin kamu jadi diri kamu sendiri, termasuk sisi-sisi yang mungkin belum sepenuhnya kamu sukai.` },
+  { c:9, t:`Kalau nanti ada hal yang perlu kita perbaiki, aku pengen kita belajar bareng, bukan saling menyalahkan. Because loving you isn't just about enjoying the beautiful moments, it's also about learning how to understand each other better.` },
+  { c:9, t:`Please, never think that you're not enough. Jangan pernah mengukur seberapa berharganya diri kamu cuma dari pencapaian, penilaian orang lain, atau dari hari-hari ketika kamu merasa gagal.` },
+  { c:9, t:`Kamu tetap berharga bahkan ketika semuanya nggak berjalan sesuai rencana. Kamu tetap layak dicintai bahkan ketika kamu lagi kesulitan mencintai diri sendiri.` },
+  { c:9, t:`Di tengah semua hal yang sedang kamu perjuangkan, jangan lupa buat bahagia dan menikmati hal-hal kecil dalam hidup kamu.` },
+  { c:9, t:`Aku pengen lihat kamu tumbuh jadi seseorang yang semakin percaya sama dirinya sendiri, yang berani mengejar mimpi-mimpinya, dan yang tahu bahwa dirinya pantas mendapatkan hal-hal baik.` },
+  { c:9, t:`Kalau kamu bisa lihat diri kamu lewat mata aku, mungkin kamu bakal sadar betapa berharganya kamu.` },
+  { c:9, en:true, t:`I'm genuinely proud of the person you are, even on the days when you don't feel proud of yourself.` },
+  { c:9, t:`Aku mungkin nggak selalu punya kata-kata yang tepat, tapi aku akan terus berusaha menunjukkan kalau perasaan aku ke kamu itu tulus.` },
+  { c:9, en:true, t:`Thank you for being you, for existing, and for letting me be a part of your life. I'm so lucky to know you.` },
+  { c:9, en:true, t:`You are so much more than your bad days, your mistakes, or your insecurities. You are loved, you are appreciated, and you matter so much to me.` },
+
+  { c:10, en:true, t:`Thank you for being you, for growing, for trying, and for letting me be part of your story. I'm proud of who you were, who you are, and who you're becoming.` },
+  { c:10, t:`Aku sayang banget sama kamu, sayang.` },
+  { c:10, t:`Kalau aku bisa ketemu lagi sama versi kecil kita waktu SMP dulu, mungkin aku cuma pengen bilang ke anak laki-laki itu: “Nggak apa-apa kalau sekarang kamu belum bisa melihat banyak hal baik dari diri kamu. Suatu hari nanti, kamu akan belajar bahwa kamu memang berharga sejak awal. Dan perempuan yang lagi ngajak kamu joget itu akan jadi salah satu orang yang membantu kamu menyadarinya.”` },
+  { c:10, en:true, t:`I love you, not because you're perfect, but because you're you. And that has always meant so much to me. 🤍` }
+];
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0, DPR = 1;
+let stars = [], floaters = [], bursts = [];
+
+const heartPath = (() => {
+  const p = new Path2D();
+  for (let i = 0; i <= 72; i++) {
+    const t = i / 72 * Math.PI * 2;
+    const x = Math.pow(Math.sin(t), 3);
+    const y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t)) / 16;
+    i ? p.lineTo(x, y) : p.moveTo(x, y);
+  }
+  p.closePath();
+  return p;
+})();
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = Math.floor(W * DPR);
+  canvas.height = Math.floor(H * DPR);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  buildScene();
+}
+
+function buildScene() {
+  const small = W < 640;
+  stars = [];
+  const nStars = small ? 55 : 95;
+  for (let i = 0; i < nStars; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.3 + 0.35,
+      ph: Math.random() * Math.PI * 2,
+      sp: 0.5 + Math.random() * 1.4
+    });
+  }
+  floaters = [];
+  const nF = small ? 22 : 38;
+  for (let i = 0; i < nF; i++) floaters.push(makeFloater(true));
+}
+
+function makeFloater(initial) {
+  const size = 7 + Math.random() * 15;
+  return {
+    x: Math.random() * W,
+    y: initial ? Math.random() * H : H + 40,
+    size,
+    speed: 0.15 + Math.random() * 0.5,
+    sway: 0.4 + Math.random() * 1.1,
+    swayPh: Math.random() * Math.PI * 2,
+    swaySp: 0.004 + Math.random() * 0.012,
+    rot: (Math.random() - 0.5) * 0.7,
+    rotSp: (Math.random() - 0.5) * 0.004,
+    a: 0.05 + Math.random() * 0.17,
+    color: Math.random() < 0.55 ? '#ffb3d1' : '#ffd9a0'
+  };
+}
+
+function burst(x, y, n) {
+  n = n || 14;
+  for (let i = 0; i < n; i++) {
+    const ang = Math.random() * Math.PI * 2;
+    const sp = 1.4 + Math.random() * 3.6;
+    bursts.push({
+      x, y,
+      vx: Math.cos(ang) * sp,
+      vy: Math.sin(ang) * sp - 1.6,
+      size: 6 + Math.random() * 11,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.14,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.011,
+      color: Math.random() < 0.5 ? '#ffb3d1' : '#ffd9a0'
+    });
+  }
+}
+
+let T = 0;
+function loop() {
+  T += 0.016;
+  ctx.clearRect(0, 0, W, H);
+
+  for (const s of stars) {
+    const a = 0.18 + 0.55 * Math.abs(Math.sin(T * s.sp + s.ph));
+    ctx.globalAlpha = a;
+    ctx.fillStyle = '#ffe9f5';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  for (const f of floaters) {
+    f.y -= f.speed;
+    f.swayPh += f.swaySp;
+    f.rot += f.rotSp;
+    const dx = Math.sin(f.swayPh) * f.sway;
+    if (f.y < -50) Object.assign(f, makeFloater(false));
+
+    ctx.save();
+    ctx.translate(f.x + dx, f.y);
+    ctx.rotate(f.rot);
+    ctx.scale(f.size / 2, f.size / 2);
+    ctx.globalAlpha = f.a;
+    ctx.fillStyle = f.color;
+    ctx.fill(heartPath);
+    ctx.restore();
+  }
+
+  for (let i = bursts.length - 1; i >= 0; i--) {
+    const b = bursts[i];
+    b.x += b.vx; b.y += b.vy;
+    b.vy += 0.055; b.vx *= 0.985;
+    b.rot += b.vr;
+    b.life -= b.decay;
+    if (b.life <= 0) { bursts.splice(i, 1); continue; }
+
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(b.rot);
+    ctx.scale(b.size / 2, b.size / 2);
+    ctx.globalAlpha = Math.max(b.life, 0) * 0.85;
+    ctx.fillStyle = b.color;
+    ctx.fill(heartPath);
+    ctx.restore();
+  }
+
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', resize);
+resize();
+loop();
+
+/* =========================================================
+   MUSIK — ambient generatif (Web Audio API)
+   ========================================================= */
+let audioCtx = null, master = null, wetBus = null, convolver = null;
+let musicOn = false, schedulerId = null;
+let nextChordTime = 0, nextNoteTime = 0, chordIdx = 0;
+
+// Progresi romantis: Cmaj7 → G → Am7 → Fmaj7
+const CHORDS = [
+  [130.81, 164.81, 196.00, 246.94], // C3  E3  G3  B3
+  [196.00, 246.94, 293.66, 392.00], // G3  B3  D4  G4
+  [220.00, 261.63, 329.63, 392.00], // A3  C4  E4  G4
+  [174.61, 220.00, 261.63, 329.63]  // F3  A3  C4  E4
+];
+
+// A minor pentatonic (nada melodi)
+const MELODY = [440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+
+function makeReverb(context, seconds, decay) {
+  const rate = context.sampleRate;
+  const len = Math.floor(rate * seconds);
+  const buf = context.createBuffer(2, len, rate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) {
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+    }
+  }
+  const conv = context.createConvolver();
+  conv.buffer = buf;
+  return conv;
+}
+
+function initAudio() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    audioCtx = new AC();
+
+    master = audioCtx.createGain();
+    master.gain.value = 0.0001;
+    master.connect(audioCtx.destination);
+
+    convolver = makeReverb(audioCtx, 4.2, 2.4);
+    wetBus = audioCtx.createGain();
+    wetBus.gain.value = 0.55;
+    wetBus.connect(convolver);
+    convolver.connect(master);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function playPad(freqs, time, dur) {
+  const attack = dur * 0.35;
+  const release = dur * 0.5;
+  freqs.forEach(f => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const panner = audioCtx.createStereoPanner();
+    const filt = audioCtx.createBiquadFilter();
+
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    osc.detune.value = (Math.random() - 0.5) * 7;
+
+    filt.type = 'lowpass';
+    filt.frequency.value = 900 + Math.random() * 500;
+    filt.Q.value = 0.2;
+
+    panner.pan.value = (Math.random() - 0.5) * 0.75;
+
+    const peak = 0.038;
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.exponentialRampToValueAtTime(peak, time + attack);
+    gain.gain.setValueAtTime(peak, time + dur - release);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+    osc.connect(filt).connect(gain);
+    gain.connect(panner);
+    panner.connect(master);
+    panner.connect(wetBus);
+
+    osc.start(time);
+    osc.stop(time + dur + 0.1);
+  });
+}
+
+function playMelody(freq, time, dur, vel) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const panner = audioCtx.createStereoPanner();
+
+  osc.type = 'triangle';
+  osc.frequency.value = freq;
+
+  // vibrato lembut
+  const lfo = audioCtx.createOscillator();
+  const lfoGain = audioCtx.createGain();
+  lfo.frequency.value = 4 + Math.random() * 2;
+  lfoGain.gain.value = 2.2;
+  lfo.connect(lfoGain).connect(osc.detune);
+
+  panner.pan.value = (Math.random() - 0.5) * 0.9;
+
+  gain.gain.setValueAtTime(0.0001, time);
+  gain.gain.exponentialRampToValueAtTime(vel, time + 0.035);
+  gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+  osc.connect(gain);
+  gain.connect(panner);
+  panner.connect(master);
+  panner.connect(wetBus);
+
+  osc.start(time);
+  osc.stop(time + dur + 0.05);
+  lfo.start(time);
+  lfo.stop(time + dur + 0.05);
+}
+
+function scheduleMusic() {
+  if (!audioCtx) return;
+  const now = audioCtx.currentTime;
+
+  while (nextChordTime < now + 2.2) {
+    const chord = CHORDS[chordIdx % CHORDS.length];
+    playPad(chord, Math.max(nextChordTime, now + 0.05), 6.2);
+    chordIdx++;
+    nextChordTime += 4.6;
+  }
+
+  while (nextNoteTime < now + 2.2) {
+    if (Math.random() < 0.62) {
+      const f = MELODY[Math.floor(Math.random() * MELODY.length)];
+      const dur = 2.0 + Math.random() * 2.4;
+      const vel = 0.055 + Math.random() * 0.035;
+      playMelody(f, Math.max(nextNoteTime, now + 0.05), dur, vel);
+    }
+    nextNoteTime += 1.5 + Math.random() * 1.4;
+  }
+}
+
+function startMusic() {
+  if (!audioCtx && !initAudio()) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  musicOn = true;
+  const now = audioCtx.currentTime;
+  master.gain.cancelScheduledValues(now);
+  master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now);
+  master.gain.linearRampToValueAtTime(0.9, now + 2.8);
+
+  if (!schedulerId) {
+    const t = audioCtx.currentTime;
+    nextChordTime = t + 0.2;
+    nextNoteTime = t + 1.8;
+    chordIdx = 0;
+    scheduleMusic();
+    schedulerId = setInterval(scheduleMusic, 250);
+  }
+
+  const btn = document.getElementById('musicBtn');
+  btn.classList.add('on');
+  btn.textContent = '♫';
+}
+
+function stopMusic() {
+  musicOn = false;
+  if (audioCtx) {
+    const now = audioCtx.currentTime;
+    master.gain.cancelScheduledValues(now);
+    master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now);
+    master.gain.linearRampToValueAtTime(0.0001, now + 1.4);
+  }
+  if (schedulerId) {
+    clearInterval(schedulerId);
+    schedulerId = null;
+  }
+  const btn = document.getElementById('musicBtn');
+  btn.classList.remove('on');
+  btn.textContent = '♪';
+}
+
+/* =========================================================
+   LOGIKA APLIKASI
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const introEl   = $('intro');
+const readerEl  = $('reader');
+const outroEl   = $('outro');
+const cardText  = $('cardText');
+const chapterEl = $('chapterLabel');
+const counterEl = $('counter');
+const progressEl= $('progressFill');
+const hintEl    = $('hint');
+
+let current = 0;
+let autoTimer = null;
+let autoOn = false;
+
+function setScreen(el) {
+  [introEl, readerEl, outroEl].forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  hintEl.classList.toggle('show', el === readerEl);
+}
+
+const pad = n => String(n).padStart(2, '0');
+
+function renderCard() {
+  const card = CARDS[current];
+  const ch = CHAPTERS[card.c];
+
+  chapterEl.textContent = ch.i + '  ' + ch.n;
+  cardText.className = 'text' + (card.en ? ' en' : '');
+  cardText.innerHTML = '';
+
+  const words = card.t.split(' ');
+  words.forEach((w, i) => {
+    const span = document.createElement('span');
+    span.className = 'w';
+    span.textContent = w;
+    span.style.transitionDelay = Math.min(i * 16, 620) + 'ms';
+    cardText.appendChild(span);
+    cardText.appendChild(document.createTextNode(' '));
+  });
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    cardText.querySelectorAll('.w').forEach(s => s.classList.add('in'));
+  }));
+
+  counterEl.textContent = pad(current + 1) + ' / ' + pad(CARDS.length);
+  progressEl.style.width = ((current + 1) / CARDS.length * 100) + '%';
+}
+
+function goTo(idx, fromUser) {
+  if (idx >= CARDS.length) { showOutro(); return; }
+  if (idx < 0) idx = 0;
+  current = idx;
+  renderCard();
+
+  if (fromUser) {
+    burst(window.innerWidth / 2, window.innerHeight * 0.52, 10);
+    hintEl.classList.remove('show');
+  }
+}
+
+function showOutro() {
+  stopAuto();
+  setScreen(outroEl);
+  burst(window.innerWidth / 2, window.innerHeight * 0.42, 26);
+  setTimeout(() => burst(window.innerWidth / 2, window.innerHeight * 0.42, 18), 260);
+}
+
+function startAuto() {
+  stopAuto();
+  autoOn = true;
+  const b = $('autoBtn');
+  b.classList.add('on');
+  b.textContent = '❚❚';
+  autoTimer = setInterval(() => {
+    if (current + 1 >= CARDS.length) { showOutro(); return; }
+    goTo(current + 1, false);
+    burst(window.innerWidth / 2, window.innerHeight * 0.5, 6);
+  }, 7000);
+}
+
+function stopAuto() {
+  autoOn = false;
+  clearInterval(autoTimer);
+  autoTimer = null;
+  const b = $('autoBtn');
+  b.classList.remove('on');
+  b.textContent = '▶';
+}
+
+/* ---------- events ---------- */
+$('openBtn').addEventListener('click', () => {
+  startMusic();
+  setScreen(readerEl);
+  current = 0;
+  renderCard();
+  burst(window.innerWidth / 2, window.innerHeight * 0.5, 18);
+  setTimeout(() => hintEl.classList.remove('show'), 5500);
+});
+
+$('nextBtn').addEventListener('click', () => goTo(current + 1, true));
+$('prevBtn').addEventListener('click', () => goTo(current - 1, true));
+
+$('autoBtn').addEventListener('click', () => autoOn ? stopAuto() : startAuto());
+
+$('musicBtn').addEventListener('click', () => {
+  musicOn ? stopMusic() : startMusic();
+});
+
+$('restartBtn').addEventListener('click', () => {
+  setScreen(readerEl);
+  current = 0;
+  renderCard();
+  burst(window.innerWidth / 2, window.innerHeight * 0.5, 18);
+});
+
+/* keyboard */
+document.addEventListener('keydown', e => {
+  if (!readerEl.classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1, true); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1, true); }
+  if (e.key === 'Escape') $('drawer').classList.remove('open');
+});
+
+/* swipe */
+let tx = 0, ty = 0, tracking = false;
+readerEl.addEventListener('touchstart', e => {
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tracking = true;
+}, { passive: true });
+readerEl.addEventListener('touchend', e => {
+  if (!tracking) return;
+  tracking = false;
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+    dx < 0 ? goTo(current + 1, true) : goTo(current - 1, true);
+  }
+}, { passive: true });
+
+/* ---------- drawer bagian ---------- */
+const drawer = $('drawer');
+const chapterList = $('chapterList');
+
+CHAPTERS.forEach((ch, i) => {
+  const first = CARDS.findIndex(c => c.c === i);
+  const total = CARDS.filter(c => c.c === i).length;
+  if (first < 0) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'ch-item';
+  btn.innerHTML = `<span class="ic">${ch.i}</span><span>${ch.n}</span>
+                   <span class="num">${pad(total)}</span>`;
+  btn.addEventListener('click', () => {
+    drawer.classList.remove('open');
+    goTo(first, true);
+  });
+  chapterList.appendChild(btn);
+});
+
+$('menuBtn').addEventListener('click', () => drawer.classList.toggle('open'));
+drawer.addEventListener('click', e => {
+  if (e.target === drawer) drawer.classList.remove('open');
+});
+
+/* inisialisasi tampilan awal */
+counterEl.textContent = '01 / ' + pad(CARDS.length);
+</script>
+</body>
+</html>
